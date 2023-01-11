@@ -158,10 +158,6 @@ class RivianDataUpdateCoordinator(DataUpdateCoordinator):  # type: ignore[misc]
 
         sensors.append("gnssLocation")
         try:
-            auth = await self._api.authenticate_graphql(
-                self._entry.data.get(CONF_USERNAME), self._entry.data.get(CONF_PASSWORD)
-            )
-
             # vehicle_info = await self._api.get_vehicle_info(
             #     vin=self._vin,
             #     access_token=self._access_token,
@@ -185,25 +181,25 @@ class RivianDataUpdateCoordinator(DataUpdateCoordinator):  # type: ignore[misc]
 
             self._rivian = Rivian("", "")
             await self._rivian.create_csrf_token()
-            auth = await self._rivian.authenticate_graphql(
-                self._entry.data.get(CONF_USERNAME), self._entry.data.get(CONF_PASSWORD)
-            )
+            # auth = await self._rivian.authenticate_graphql(
+            #     self._entry.data.get(CONF_USERNAME), self._entry.data.get(CONF_PASSWORD)
+            # )
 
-            json_data = await auth.json()
-            self._access_token = json_data["data"]["login"]["accessToken"]
+            # json_data = await auth.json()
+            # self._access_token = json_data["data"]["login"]["accessToken"]
 
             return await self._update_api_data()
         except Exception as err:  # pylint: disable=broad-except
             if err.args[0] == 401:
                 self._rivian = Rivian("", "")
                 await self._rivian.create_csrf_token()
-                auth = await self._rivian.authenticate_graphql(
-                    self._entry.data.get(CONF_USERNAME),
-                    self._entry.data.get(CONF_PASSWORD),
-                )
+                # auth = await self._rivian.authenticate_graphql(
+                #     self._entry.data.get(CONF_USERNAME),
+                #     self._entry.data.get(CONF_PASSWORD),
+                # )
 
-                json_data = await auth.json()
-                self._access_token = json_data["data"]["login"]["accessToken"]
+                # json_data = await auth.json()
+                # self._access_token = json_data["data"]["login"]["accessToken"]
                 return await self._update_api_data()
 
             _LOGGER.error(
@@ -219,12 +215,12 @@ class RivianDataUpdateCoordinator(DataUpdateCoordinator):  # type: ignore[misc]
             _LOGGER.info("Rivian token expired, refreshing")
             self._rivian = Rivian("", "")
             await self._rivian.create_csrf_token()
-            auth = await self._rivian.authenticate_graphql(
-                self._entry.data.get(CONF_USERNAME), self._entry.data.get(CONF_PASSWORD)
-            )
+            # auth = await self._rivian.authenticate_graphql(
+            #     self._entry.data.get(CONF_USERNAME), self._entry.data.get(CONF_PASSWORD)
+            # )
 
-            json_data = await auth.json()
-            self._access_token = json_data["data"]["login"]["accessToken"]
+            # json_data = await auth.json()
+            # self._access_token = json_data["data"]["login"]["accessToken"]
             return await self._update_api_data()
         except Exception as err:  # pylint: disable=broad-except
             _LOGGER.error(
