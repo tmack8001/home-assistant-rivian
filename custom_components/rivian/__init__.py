@@ -211,20 +211,9 @@ class RivianDataUpdateCoordinator(DataUpdateCoordinator):  # type: ignore[misc]
         """Update data via library, refresh token if necessary."""
         try:
             return await self._update_api_data()
-        except RivianExpiredTokenError:
-            _LOGGER.info("Rivian token expired, refreshing")
-            self._rivian = Rivian("", "")
-            await self._rivian.create_csrf_token()
-            # auth = await self._rivian.authenticate_graphql(
-            #     self._entry.data.get(CONF_USERNAME), self._entry.data.get(CONF_PASSWORD)
-            # )
-
-            # json_data = await auth.json()
-            # self._access_token = json_data["data"]["login"]["accessToken"]
-            return await self._update_api_data()
         except Exception as err:  # pylint: disable=broad-except
             _LOGGER.error(
-                "Unknown Exception while updating Rivian data: %s", err, exc_info=1
+                "Unknown Exception while calling updating Rivian data: %s", err, exc_info=1
             )
             raise Exception("Error communicating with API") from err
 
